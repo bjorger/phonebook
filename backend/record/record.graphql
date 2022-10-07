@@ -1,0 +1,20 @@
+type Record {
+  _id: String!
+  firstname: String!
+  lastname: String!
+  phonenumber: String!
+}
+
+input RecordInput {
+  firstname: String!
+  lastname: String!
+  phonenumber: String!
+}
+
+type Query {
+  records: [Record!]
+}
+
+type Mutation {
+  createRecord(input: RecordInput!): Record
+}
