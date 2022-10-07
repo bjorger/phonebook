@@ -1,0 +1,35 @@
+version: "3"
+services:
+    frontend:
+        container_name: client
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        image: react
+        ports:
+            - "3001:3001"
+        volumes:
+            - ./client
+    backend:
+        container_name: backend
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        image: server
+        ports:
+            - "5001:5001"
+        volumes:
+            - ./server
+        environment:
+            - MONGO_URL=mongodb://mongo:27017
+    mongodb:
+        image: mongo
+        container_name: mongodb
+        environment:
+            - PUID=1000
+            - PGID=1000
+        volumes:
+            - /mongodb/database:/data/db
+        ports:
+            - 27017:27017
+        restart: unless-stopped
