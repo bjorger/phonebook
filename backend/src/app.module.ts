@@ -20,7 +20,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url: process.env.MONGO_URL,
-      entities: [join(__dirname, '**/**.entity{.ts,.js}')],
+      entities: [__dirname + '/../**/*.entity.{js,ts}'],
       synchronize: true,
       useNewUrlParser: true,
       logging: true,
