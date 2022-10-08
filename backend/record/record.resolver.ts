@@ -16,4 +16,14 @@ export class RecordResolver {
   async createRecord(@Args('input') recordInput: RecordInput) {
     return await this.recordService.create(recordInput);
   }
+
+  @Mutation(() => Number)
+  async deleteRecord(@Args('input') userId: string) {
+    return await this.recordService.delete(userId);
+  }
+
+  @Mutation(() => Record)
+  async findRecord(@Args('input') userId: string) {
+    return await this.recordService.find(userId);
+  }
 }

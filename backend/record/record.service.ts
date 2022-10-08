@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
 import { Record } from './record.entity';
@@ -23,5 +23,23 @@ export class RecordService {
     record.lastname = recordInput.lastname;
     record.phonenumber = recordInput.phonenumber;
     return this.recordRepository.save(record);
+  }
+
+  async delete(id: string): Promise<number> {
+    const result = await this.recordRepository.deleteOne({
+      _id: id,
+    });
+
+    return result.deletedCount;
+  }
+
+  async find(id: string): Promise<Record> {
+    const result = await this.recordRepository.findOneBy({ _id: id });
+
+    if (!result) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    return result;
   }
 }

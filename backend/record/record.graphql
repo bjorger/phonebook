@@ -17,4 +17,6 @@ type Query {
 
 type Mutation {
   createRecord(input: RecordInput!): Record
+  deleteRecord(input: String!): Int
+  findRecord(input: String!): Record
 }
