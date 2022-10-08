@@ -13,17 +13,25 @@ export class RecordResolver {
   }
 
   @Mutation(() => Record)
-  async createRecord(@Args('input') recordInput: RecordInput) {
+  async createRecord(@Args('record') recordInput: RecordInput) {
     return await this.recordService.create(recordInput);
   }
 
   @Mutation(() => Number)
-  async deleteRecord(@Args('input') userId: string) {
-    return await this.recordService.delete(userId);
+  async deleteRecord(@Args('id') recordId: string) {
+    return await this.recordService.delete(recordId);
   }
 
   @Mutation(() => Record)
-  async findRecord(@Args('input') userId: string) {
-    return await this.recordService.find(userId);
+  async findRecord(@Args('id') recordId: string) {
+    return await this.recordService.find(recordId);
+  }
+
+  @Mutation(() => Number)
+  async updateRecord(
+    @Args('id') recordId: string,
+    @Args('record') record: RecordInput,
+  ) {
+    return this.recordService.update(recordId, record);
   }
 }

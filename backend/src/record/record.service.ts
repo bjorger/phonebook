@@ -42,4 +42,15 @@ export class RecordService {
 
     return result;
   }
+
+  async update(id: string, record: RecordInput): Promise<number> {
+    const result = await this.recordRepository.update(
+      {
+        _id: id,
+      },
+      record,
+    );
+
+    return result.affected;
+  }
 }
