@@ -1,43 +1,87 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RecordService } from './record.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Record } from './record.entity';
+import { TypeOrmMongoDBTestingModule } from '../test-utils/mongo-db-in-memory';
+import {
+  closeInMongodConnection,
+  testDatasetSeed,
+} from '../test-utils/testData.seed';
+import { RecordInput } from './record.input';
 
 describe('RecordService', () => {
   let service: RecordService;
+  let module: TestingModule;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        RecordService,
-        {
-          provide: getRepositoryToken(Record),
-          useValue: {
-            find: jest.fn(() => [
-              {
-                _id: '0725f568-a4a4-4ec6-ad05-77aa6dd53226',
-                firstname: 'Robin',
-                lastname: 'Braumann',
-              },
-              {
-                _id: '02d8293d-c370-4374-ac52-0dda77255ad7',
-                firstname: 'Peter',
-                lastname: 'Hans',
-              },
-            ]),
-          },
-        },
-      ],
+    module = await Test.createTestingModule({
+      imports: [...TypeOrmMongoDBTestingModule()],
+      providers: [RecordService],
     }).compile();
 
     service = module.get<RecordService>(RecordService);
+    await testDatasetSeed();
+  });
+
+  afterAll(async () => {
+    await module.close();
+    await closeInMongodConnection();
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('should do something', async () => {
+  it('should return two records', async () => {
     expect(await service.findAll()).toHaveLength(2);
+  });
+
+  it('should return the input record', async () => {
+    const recordToStore: RecordInput = {
+      firstname: 'Sebastian',
+      lastname: 'testington',
+      phonenumber: '0664 1234567',
+    };
+
+    const result = await service.create(recordToStore);
+
+    expect(result._id).toEqual(expect.any(String));
+    expect(result).toMatchObject(recordToStore);
+  });
+
+  it('should return the amount of deleted documents', async () => {
+    const recordId = '02d8293d-c370-4374-ac52-0dda77255ad7';
+
+    const result = await service.delete(recordId);
+
+    expect(result).toEqual(1);
+  });
+
+  it('should return the amount of updated objects', async () => {
+    const recordId = '02d8293d-c370-4374-ac52-0dda77255ad7';
+    const updatedRecord: RecordInput = {
+      firstname: 'Update',
+      lastname: 'testington',
+      phonenumber: '1234567',
+    };
+
+    const result = await service.update(recordId, updatedRecord);
+
+    expect(result).toEqual(1);
+  });
+
+  it('should return the record with the specified ID', async () => {
+    const recordId = '02d8293d-c370-4374-ac52-0dda77255ad7';
+
+    const result = await service.find(recordId);
+
+    expect(result._id).toEqual(recordId);
+  });
+
+  it('should throw an user not found error', async () => {
+    try {
+      await service.find(expect.any(String));
+    } catch (e) {
+      expect(e.response).toEqual('User not found');
+      expect(e.status).toEqual(404);
+    }
   });
 });
