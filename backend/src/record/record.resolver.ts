@@ -1,5 +1,4 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { take } from 'rxjs';
 import { Record } from './record.entity';
 import { RecordInput } from './record.input';
 import { RecordService } from './record.service';
