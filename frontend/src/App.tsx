@@ -1,12 +1,10 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { useGetRecords } from "./hooks/useRequest";
+import { RecordContext } from "./providers/apiProviders";
 
 function App() {
-    const { data, error, isLoading, isSuccess } = useGetRecords();
-
-    console.log(data);
+    const records = React.useContext(RecordContext);
 
     return (
         <div className="App">
