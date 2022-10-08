@@ -12,8 +12,8 @@ export class RecordService {
     private readonly recordRepository: MongoRepository<Record>,
   ) {}
 
-  async findAll(): Promise<Record[]> {
-    return this.recordRepository.find();
+  async findAll(take = 25, skip = 0): Promise<Record[]> {
+    return this.recordRepository.find({ skip, take });
   }
 
   async create(recordInput: RecordInput): Promise<Record> {

@@ -1,4 +1,5 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { take } from 'rxjs';
 import { Record } from './record.entity';
 import { RecordInput } from './record.input';
 import { RecordService } from './record.service';
@@ -8,8 +9,13 @@ export class RecordResolver {
   constructor(private readonly recordService: RecordService) {}
 
   @Query(() => [Record])
-  async records() {
-    return this.recordService.findAll();
+  async records(@Args('take') take: number, @Args('skip') skip: number) {
+    return await this.recordService.findAll(take, skip);
+  }
+
+  @Query(() => Record)
+  async record(@Args('id') recordId: string) {
+    return await this.recordService.find(recordId);
   }
 
   @Mutation(() => Record)
@@ -20,11 +26,6 @@ export class RecordResolver {
   @Mutation(() => Number)
   async deleteRecord(@Args('id') recordId: string) {
     return await this.recordService.delete(recordId);
-  }
-
-  @Mutation(() => Record)
-  async findRecord(@Args('id') recordId: string) {
-    return await this.recordService.find(recordId);
   }
 
   @Mutation(() => Number)

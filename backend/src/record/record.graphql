@@ -12,12 +12,12 @@ input RecordInput {
 }
 
 type Query {
-  records: [Record!]
+  records(take: Int, skip: Int): [Record!]
+  record(id: String!): Record!
 }
 
 type Mutation {
   createRecord(record: RecordInput!): Record
   deleteRecord(id: String!): Int
-  findRecord(id: String!): Record
   updateRecord(id: String!, record: RecordInput!): Int
 }
