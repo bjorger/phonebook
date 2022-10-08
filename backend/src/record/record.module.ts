@@ -25,7 +25,6 @@ import { RecordService } from './record.service';
       useNewUrlParser: true,
       logging: true,
     }),
-    RecordModule,
   ],
   providers: [RecordResolver, RecordService],
 })
