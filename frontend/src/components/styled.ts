@@ -18,6 +18,10 @@ export const Headline = styled.h1<HeadlineProps>`
     text-align: ${({ textAlign }) => (textAlign ? textAlign : "left")};
 `;
 
+export const Headline2 = styled.h2<HeadlineProps>`
+    text-align: ${({ textAlign }) => (textAlign ? textAlign : "left")};
+`;
+
 export const FlexContainer = styled.div<FlexContainerProps>`
     display: flex;
     flex-direction: ${({ flexDirection }) => (flexDirection ? flexDirection : "row")};

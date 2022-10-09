@@ -1,10 +1,10 @@
 import { QueryObserverIdleResult, useMutation, UseMutationResult, useQuery, UseQueryResult } from "react-query";
 import { GraphQLClient, gql } from "graphql-request";
-import { Record } from "../types/graphql.types";
+import { Record, RecordInput } from "../types/graphql.types";
 
 const API_URL = `${process.env.REACT_APP_BACKEND_URL}graphql`;
 
-const graphQLClient = new GraphQLClient(API_URL);
+export const graphQLClient = new GraphQLClient(API_URL);
 
 export interface IGetRecordsResponse {
     records: Record[];
@@ -54,5 +54,33 @@ export function useDeleteRecord(id: string): UseMutationResult<Number, unknown, 
         );
 
         return deleteRecord;
+    });
+}
+
+interface ICreateRecord {
+    createRecord: Record;
+}
+
+export function useCreateRecord(): UseMutationResult<ICreateRecord, any, RecordInput, unknown> {
+    return useMutation<ICreateRecord, any, RecordInput>(["create-record"], async ({ firstname, lastname, phonenumber }) => {
+        const createRecord = await graphQLClient.request(
+            gql`
+                mutation createRecord($firstname: String!, $lastname: String!, $phonenumber: String!) {
+                    createRecord(record: { firstname: $firstname, lastname: $lastname, phonenumber: $phonenumber }) {
+                        _id
+                        firstname
+                        lastname
+                        phonenumber
+                    }
+                }
+            `,
+            {
+                firstname,
+                lastname,
+                phonenumber,
+            },
+        );
+
+        return createRecord;
     });
 }

@@ -14,13 +14,12 @@ interface ListItemProps {
 export const ListItem: React.FC<ListItemProps> = ({ record }) => {
     const { firstname, lastname, phonenumber, _id } = record;
     const mutation = useDeleteRecord(_id);
-    const { state, dispatch } = React.useContext(RecordContext);
+    const { dispatch } = React.useContext(RecordContext);
 
     const onDelete = () => {
-        const updatedRecords = state.records.filter(({ _id }) => _id !== record._id);
         dispatch({
-            type: RecordActionKind.SET_RECORDS,
-            payload: updatedRecords,
+            type: RecordActionKind.DELETE_RECORD,
+            payload: record._id,
         });
         mutation.mutate();
     };

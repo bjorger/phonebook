@@ -1,7 +1,7 @@
 import React from "react";
 import { AddContact } from "./components/AddContact";
 import { ListItem } from "./components/ListItem";
-import { Contacts, FlexContainer, Grid, Headline, Layout } from "./components/styled";
+import { Contacts, FlexContainer, Grid, Headline, Headline2, Layout } from "./components/styled";
 import { RecordContext } from "./providers/apiProvider";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
                     <Headline textAlign="center">Phone Book App</Headline>
                 </FlexContainer>
                 <FlexContainer margin="20px 0" justifyContent="space-between">
-                    Contacts
+                    <Headline2>Contacts</Headline2>
                     <AddContact />
                 </FlexContainer>
                 {state.records.map((record, index) => (
