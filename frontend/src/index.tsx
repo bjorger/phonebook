@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 root.render(
-    <React.StrictMode>
+    <>
         <GlobalStyle />
         <ThemeProvider theme={theme}>
             <QueryClientProvider client={queryClient}>
@@ -39,7 +39,7 @@ root.render(
                 </APIProvider>
             </QueryClientProvider>
         </ThemeProvider>
-    </React.StrictMode>,
+    </>,
 );
 
 // If you want to start measuring performance in your app, pass a function

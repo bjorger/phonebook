@@ -36,7 +36,6 @@ const reducer = (state: RecordState, action: RecordAction): RecordState => {
         return { ...state, records: action.payload as Record[] };
     } else if (action.type === RecordActionKind.ADD_RECORD) {
         const currentRecords = state.records;
-        console.log(action.payload);
         currentRecords.push(action.payload as Record);
 
         return { ...state, records: currentRecords };

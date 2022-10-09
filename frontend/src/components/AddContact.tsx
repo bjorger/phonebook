@@ -13,7 +13,7 @@ interface FormData {
 export const AddContact: React.FC = () => {
     const mutation = useCreateRecord();
     const [modalState, setModalState] = React.useState<boolean>(false);
-    const { register, handleSubmit } = useForm<FormData>();
+    const { register, handleSubmit, reset } = useForm<FormData>();
     const { dispatch } = React.useContext(RecordContext);
 
     const onSubmit = handleSubmit(async (data) => {
@@ -21,6 +21,13 @@ export const AddContact: React.FC = () => {
         dispatch({
             type: RecordActionKind.ADD_RECORD,
             payload: res.createRecord,
+        });
+
+        setModalState(false);
+        reset({
+            firstname: "",
+            lastname: "",
+            phonenumber: "",
         });
     });
 
