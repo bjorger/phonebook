@@ -60,8 +60,6 @@ export class RecordService {
       },
     });
 
-    console.log(result);
-
     Logger.log(`Finding records with lastname ${lastname}`);
 
     if (!result) {
