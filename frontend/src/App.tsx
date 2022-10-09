@@ -1,23 +1,19 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import { Contacts, FlexContainer, Grid, Headline, Layout } from "./components/styled";
 import { RecordContext } from "./providers/apiProviders";
 
 function App() {
     const records = React.useContext(RecordContext);
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
-                </p>
-                <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-                    Learn React
-                </a>
-            </header>
-        </div>
+        <Grid>
+            <Layout>
+                <FlexContainer>
+                    <Contacts fontSize="large" />
+                    <Headline textAlign="center">Phone Book App</Headline>
+                </FlexContainer>
+            </Layout>
+        </Grid>
     );
 }
 
