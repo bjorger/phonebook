@@ -43,7 +43,7 @@ export const ListItem: React.FC<ListItemProps> = ({ record }) => {
 };
 
 const ListItemContainer = styled(FlexContainer)`
-    border: 1px solid ${({ theme }) => theme.palette.gray};
+    border-top: 1px solid ${({ theme }) => theme.palette.gray};
     padding: 10px 20px;
 `;
 

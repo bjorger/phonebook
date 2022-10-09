@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { AddContact } from "./components/AddContact";
 import { ListItem } from "./components/ListItem";
 import { Contacts, FlexContainer, Grid, Headline, Headline2, Layout } from "./components/styled";
@@ -18,12 +19,19 @@ function App() {
                     <Headline2>Contacts</Headline2>
                     <AddContact />
                 </FlexContainer>
-                {state.records.map((record, index) => (
-                    <ListItem key={record.firstname + record.lastname + index} record={record} />
-                ))}
+                <Container>
+                    {state.records.map((record, index) => (
+                        <ListItem key={record.firstname + record.lastname + index} record={record} />
+                    ))}
+                </Container>
             </Layout>
         </Grid>
     );
 }
 
 export default App;
+
+const Container = styled.div`
+    border: 1px solid ${({ theme }) => theme.palette.gray};
+    border-top: 0px;
+`;
