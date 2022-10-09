@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { AddContact } from "./components/AddContact";
 import { ListItem } from "./components/ListItem";
+import { Search } from "./components/Searchbar";
 import { Contacts, FlexContainer, Grid, Headline, Headline2, Layout } from "./components/styled";
 import { RecordContext } from "./providers/apiProvider";
 
@@ -19,6 +20,7 @@ function App() {
                     <Headline2>Contacts</Headline2>
                     <AddContact />
                 </FlexContainer>
+                <Search />
                 <Container>
                     {state.records.map((record, index) => (
                         <ListItem key={record.firstname + record.lastname + index} record={record} />
