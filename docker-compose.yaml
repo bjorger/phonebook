@@ -23,11 +23,13 @@ services:
         volumes:
             - ./server
         environment:
-            - MONGO_URL=mongodb://mongo:27017
+            - MONGO_URL=mongodb://172.17.0.1:27017
+        links:
+            - mongo
 
-    mongodb:
+    mongo:
         image: mongo
-        container_name: mongodb
+        container_name: mongo
         environment:
             - PUID=1000
             - PGID=1000
@@ -35,4 +37,6 @@ services:
             - /mongodb/database:/data/db
         ports:
             - 27017:27017
-        restart: unless-stopped
+        expose:
+            - 27017
+        restart: always

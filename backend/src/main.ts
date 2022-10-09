@@ -8,6 +8,8 @@ async function bootstrap() {
   const app = await NestFactory.create(RecordModule);
   await app.listen(port);
 
+  console.log(process.env.MONGO_URL);
+
   Logger.log(`Server running on port ${port}`);
 }
 bootstrap();
