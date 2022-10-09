@@ -14,7 +14,7 @@ function App() {
                     <Headline textAlign="center">Phone Book App</Headline>
                 </FlexContainer>
                 {records?.data?.records.map((record) => (
-                    <ListItem record={record} />
+                    <ListItem key={record.firstname + record.lastname} record={record} />
                 ))}
             </Layout>
         </Grid>

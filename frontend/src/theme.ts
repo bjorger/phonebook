@@ -7,6 +7,7 @@ interface Breakpoints {
 interface Palette {
     background: string;
     gray: string;
+    white: string;
 }
 
 interface Fonts {
@@ -28,6 +29,7 @@ const theme: Theme = {
     palette: {
         background: "#f8f4f4",
         gray: "#808080",
+        white: "#FFFFFF",
     },
     fonts: {
         h1: css`

@@ -21,6 +21,12 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     }
+
+    * {
+        a {
+            text-decoration: none;
+        }
+    }
 `;
 
 root.render(
