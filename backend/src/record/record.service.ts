@@ -51,6 +51,26 @@ export class RecordService {
     return result;
   }
 
+  async findByLastName(lastname: string): Promise<Record[]> {
+    const result = await this.recordRepository.findBy({
+      where: {
+        lastname: {
+          $eq: lastname,
+        },
+      },
+    });
+
+    console.log(result);
+
+    Logger.log(`Finding records with lastname ${lastname}`);
+
+    if (!result) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    return result;
+  }
+
   async update(id: string, record: RecordInput): Promise<number> {
     const result = await this.recordRepository.update(
       {

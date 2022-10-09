@@ -76,6 +76,14 @@ describe('RecordService', () => {
     expect(result._id).toEqual(recordId);
   });
 
+  it('should return the 1 records', async () => {
+    const lastname = 'Braumann';
+
+    const result = await service.findByLastName(lastname);
+
+    expect(result).toHaveLength(1);
+  });
+
   it('should throw an user not found error', async () => {
     try {
       await service.find(expect.any(String));

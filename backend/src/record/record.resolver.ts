@@ -17,6 +17,11 @@ export class RecordResolver {
     return await this.recordService.find(recordId);
   }
 
+  @Query(() => [Record])
+  async getRecordsByLastname(@Args('lastname') lastname: string) {
+    return await this.recordService.findByLastName(lastname);
+  }
+
   @Mutation(() => Record)
   async createRecord(@Args('record') recordInput: RecordInput) {
     return await this.recordService.create(recordInput);

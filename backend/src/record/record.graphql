@@ -12,8 +12,9 @@ input RecordInput {
 }
 
 type Query {
-  records(take: Int, skip: Int): [Record!]
+  records(take: Int = 25, skip: Int = 0): [Record!]
   record(id: String!): Record!
+  recordsByLastname(lastname: String!): [Record!]
 }
 
 type Mutation {

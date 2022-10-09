@@ -20,12 +20,14 @@ export const testDatasetSeed = async () => {
     _id: '0725f568-a4a4-4ec6-ad05-77aa6dd53226',
     firstname: 'Robin',
     lastname: 'Braumann',
+    phonenumber: '0664 123456789',
   });
 
   await testRepository.insert({
     _id: '02d8293d-c370-4374-ac52-0dda77255ad7',
     firstname: 'Peter',
     lastname: 'Hans',
+    phonenumber: '0664 123456789',
   });
 };
 
