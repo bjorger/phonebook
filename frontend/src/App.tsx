@@ -1,4 +1,5 @@
 import React from "react";
+import { ListItem } from "./components/ListItem";
 import { Contacts, FlexContainer, Grid, Headline, Layout } from "./components/styled";
 import { RecordContext } from "./providers/apiProviders";
 
@@ -12,6 +13,9 @@ function App() {
                     <Contacts fontSize="large" />
                     <Headline textAlign="center">Phone Book App</Headline>
                 </FlexContainer>
+                {records?.data?.records.map((record) => (
+                    <ListItem record={record} />
+                ))}
             </Layout>
         </Grid>
     );

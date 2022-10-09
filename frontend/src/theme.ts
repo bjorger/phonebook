@@ -6,10 +6,11 @@ interface Breakpoints {
 
 interface Palette {
     background: string;
+    gray: string;
 }
 
 interface Fonts {
-    headline: FlattenInterpolation<ThemeProps<unknown>>;
+    h1: FlattenInterpolation<ThemeProps<unknown>>;
 }
 
 interface Theme {
@@ -26,9 +27,10 @@ const theme: Theme = {
     breakpoints,
     palette: {
         background: "#f8f4f4",
+        gray: "#808080",
     },
     fonts: {
-        headline: css`
+        h1: css`
             font-size: 36px;
             line-height: 36px;
             font-weight: 700;
