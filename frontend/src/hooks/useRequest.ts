@@ -11,7 +11,7 @@ export interface IGetRecordsResponse {
 }
 
 export function useGetRecords(
-    take = 2,
+    take = 25,
     skip = 0,
 ): UseQueryResult<IGetRecordsResponse, unknown> | QueryObserverIdleResult<IGetRecordsResponse, unknown> {
     return useQuery<IGetRecordsResponse>(

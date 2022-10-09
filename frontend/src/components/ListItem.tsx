@@ -6,6 +6,7 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDeleteRecord } from "../hooks/useRequest";
+import { RecordContext } from "../providers/apiProvider";
 interface ListItemProps {
     record: Record;
 }
@@ -13,8 +14,13 @@ interface ListItemProps {
 export const ListItem: React.FC<ListItemProps> = ({ record }) => {
     const { firstname, lastname, phonenumber, _id } = record;
     const mutation = useDeleteRecord(_id);
+    const { records, setRecords } = React.useContext(RecordContext);
 
-    console.log(mutation);
+    const onDelete = () => {
+        const updatedRecords = records.filter(({ _id }) => _id !== record._id);
+        setRecords(updatedRecords);
+        mutation.mutate();
+    };
 
     return (
         <ListItemContainer justifyContent="space-between" background="white">
@@ -27,7 +33,7 @@ export const ListItem: React.FC<ListItemProps> = ({ record }) => {
                     {phonenumber}
                 </Phonenumber>
             </div>
-            <DeleteButton onClick={() => mutation.mutate} color="error" variant="contained">
+            <DeleteButton onClick={() => onDelete()} color="error" variant="contained">
                 <DeleteIcon />
             </DeleteButton>
         </ListItemContainer>

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { APIProvider } from "./providers/apiProviders";
+import { APIProvider } from "./providers/apiProvider";
 import { createGlobalStyle } from "styled-components";
 import theme from "./theme";
 import { ThemeProvider } from "styled-components";

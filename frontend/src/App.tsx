@@ -1,22 +1,26 @@
 import React from "react";
 import { ListItem } from "./components/ListItem";
 import { Contacts, FlexContainer, Grid, Headline, Layout } from "./components/styled";
-import { RecordContext } from "./providers/apiProviders";
+import { RecordContext } from "./providers/apiProvider";
 
 function App() {
-    const records = React.useContext(RecordContext);
+    const { records, isLoading } = React.useContext(RecordContext);
 
     return (
         <Grid>
-            <Layout>
-                <FlexContainer>
-                    <Contacts fontSize="large" />
-                    <Headline textAlign="center">Phone Book App</Headline>
-                </FlexContainer>
-                {records?.data?.records.map((record) => (
-                    <ListItem key={record.firstname + record.lastname} record={record} />
-                ))}
-            </Layout>
+            {isLoading ? (
+                "Data is being fetched right now"
+            ) : (
+                <Layout>
+                    <FlexContainer>
+                        <Contacts fontSize="large" />
+                        <Headline textAlign="center">Phone Book App</Headline>
+                    </FlexContainer>
+                    {records.map((record, index) => (
+                        <ListItem key={record.firstname + record.lastname + index} record={record} />
+                    ))}
+                </Layout>
+            )}
         </Grid>
     );
 }
