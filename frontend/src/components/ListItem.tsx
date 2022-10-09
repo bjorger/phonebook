@@ -6,7 +6,7 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDeleteRecord } from "../hooks/useRequest";
-import { RecordContext } from "../providers/apiProvider";
+import { RecordActionKind, RecordContext } from "../providers/apiProvider";
 interface ListItemProps {
     record: Record;
 }
@@ -14,11 +14,14 @@ interface ListItemProps {
 export const ListItem: React.FC<ListItemProps> = ({ record }) => {
     const { firstname, lastname, phonenumber, _id } = record;
     const mutation = useDeleteRecord(_id);
-    const { records, setRecords } = React.useContext(RecordContext);
+    const { state, dispatch } = React.useContext(RecordContext);
 
     const onDelete = () => {
-        const updatedRecords = records.filter(({ _id }) => _id !== record._id);
-        setRecords(updatedRecords);
+        const updatedRecords = state.records.filter(({ _id }) => _id !== record._id);
+        dispatch({
+            type: RecordActionKind.SET_RECORDS,
+            payload: updatedRecords,
+        });
         mutation.mutate();
     };
 

@@ -10,6 +10,7 @@ interface FlexContainerProps {
     alignItems?: "center" | "start" | "end" | "stretch" | "flex-start" | "flex-end";
     justifyContent?: "center" | "space-between" | "start" | "space-around" | "space-evenly";
     background?: string;
+    margin?: string;
 }
 
 export const Headline = styled.h1<HeadlineProps>`
@@ -23,6 +24,7 @@ export const FlexContainer = styled.div<FlexContainerProps>`
     align-items: ${({ alignItems }) => (alignItems ? alignItems : "center")};
     justify-content: ${({ justifyContent }) => (justifyContent ? justifyContent : "center")};
     background: ${({ background }) => (background ? background : "transparent")};
+    margin: ${({ margin }) => (margin ? margin : "0")};
 `;
 
 export const Contacts = styled(ContactsIcon)`
