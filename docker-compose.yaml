@@ -10,6 +10,8 @@ services:
             - "3001:3001"
         volumes:
             - ./client
+        environment:
+            - REACT_APP_BACKEND_URL=http://localhost:5001/
     backend:
         container_name: backend
         build:
@@ -22,6 +24,7 @@ services:
             - ./server
         environment:
             - MONGO_URL=mongodb://mongo:27017
+
     mongodb:
         image: mongo
         container_name: mongodb
