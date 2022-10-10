@@ -16,7 +16,6 @@ export const LoadMore: React.FC = () => {
         take: 25,
         skip: 25,
     });
-    const [allRecordsLoaded, setAllRecordsLoaded] = React.useState<boolean>(false);
     const { dispatch } = React.useContext(RecordContext);
     const { refetch } = useGetRecords(loadMore.take, loadMore.skip, false);
     const [{ updateError }, , setError] = useSnackbar();
@@ -27,24 +26,20 @@ export const LoadMore: React.FC = () => {
         if (res.isError) {
             setError(ErrorType.UPDATE_ERROR);
         } else if (res.data) {
-            if (res.data.records.length > 0) {
-                setLoadMore({
-                    take: loadMore.take,
-                    skip: loadMore.skip + 25,
-                });
-                dispatch({
-                    type: RecordActionKind.APPEND_RECORDS,
-                    payload: res.data.records,
-                });
-            } else {
-                setAllRecordsLoaded(true);
-            }
+            setLoadMore({
+                take: loadMore.take,
+                skip: loadMore.skip + 25,
+            });
+            dispatch({
+                type: RecordActionKind.APPEND_RECORDS,
+                payload: res.data.records,
+            });
         }
     };
 
     return (
         <>
-            <LoadMoreButton disabled={allRecordsLoaded} variant="contained" onClick={() => onLoadMore()}>
+            <LoadMoreButton variant="contained" onClick={() => onLoadMore()}>
                 Load More
             </LoadMoreButton>
             <Snackbar error={updateError} message="Error while fetching new records" />
