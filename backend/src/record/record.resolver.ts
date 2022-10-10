@@ -18,7 +18,7 @@ export class RecordResolver {
   }
 
   @Query(() => [Record])
-  async getRecordsByLastname(@Args('lastname') lastname: string) {
+  async recordsByLastname(@Args('lastname') lastname: string) {
     return await this.recordService.findByLastName(lastname);
   }
 

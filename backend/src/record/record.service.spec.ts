@@ -77,7 +77,7 @@ describe('RecordService', () => {
   });
 
   it('should return the 1 records', async () => {
-    const lastname = 'Braumann';
+    const lastname = 'Bra';
 
     const result = await service.findByLastName(lastname);
 

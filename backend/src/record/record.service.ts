@@ -52,15 +52,19 @@ export class RecordService {
   }
 
   async findByLastName(lastname: string): Promise<Record[]> {
+    const regex = new RegExp(`^${lastname}`);
+
     const result = await this.recordRepository.findBy({
       where: {
         lastname: {
-          $eq: lastname,
+          $regex: regex,
         },
       },
     });
 
-    Logger.log(`Finding records with lastname ${lastname}`);
+    Logger.log(
+      `Finding records with lastname ${lastname}, RegEx used: ${regex}`,
+    );
 
     if (!result) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
