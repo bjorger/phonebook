@@ -3,16 +3,16 @@ import React from "react";
 import { useUpdateRecord } from "../hooks/useRequest";
 import { ErrorType, useSnackbar } from "../hooks/useSnackbar";
 import { RecordActionKind, RecordContext } from "../providers/apiProvider";
-import { UpdateRecordInput } from "../types/graphql.types";
+import { Record, UpdateRecordInput } from "../types/graphql.types";
 import { RecordButton } from "./ListItem";
 import { Modal } from "./Modal";
 import { Snackbar } from "./Snackbar";
 
 interface IUpdateRecord {
-    _id: string;
+    record: Record;
 }
 
-export const UpdateRecord: React.FC<IUpdateRecord> = ({ _id }) => {
+export const UpdateRecord: React.FC<IUpdateRecord> = ({ record }) => {
     const mutation = useUpdateRecord();
     const [modalState, setModalState] = React.useState<boolean>(false);
     const { dispatch } = React.useContext(RecordContext);
@@ -34,7 +34,7 @@ export const UpdateRecord: React.FC<IUpdateRecord> = ({ _id }) => {
 
     const handleSubmit = async (data: UpdateRecordInput) => {
         const strippedData = removeEmptyFields(data);
-        const updatedRecord = { ...strippedData, _id };
+        const updatedRecord = { ...strippedData, _id: record._id };
         await mutation.mutateAsync(updatedRecord);
 
         if (mutation.isError) {
@@ -53,7 +53,14 @@ export const UpdateRecord: React.FC<IUpdateRecord> = ({ _id }) => {
                 <EditIcon />
                 <Snackbar error={updateError} message="Error while updating record" />
             </RecordButton>
-            <Modal fieldsRequired={false} modalState={modalState} setModalState={setModalState} submitFunction={handleSubmit} />
+            <Modal
+                buttonText="Update Contact"
+                fieldsRequired={false}
+                modalState={modalState}
+                setModalState={setModalState}
+                submitFunction={handleSubmit}
+                defaultValues={record}
+            />
         </>
     );
 };

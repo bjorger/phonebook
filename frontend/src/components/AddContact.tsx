@@ -31,7 +31,13 @@ export const AddContact: React.FC = () => {
             <Button variant="contained" onClick={() => setModalState(true)}>
                 + Add Contact
             </Button>
-            <Modal fieldsRequired={true} modalState={modalState} setModalState={setModalState} submitFunction={handleSubmit} />
+            <Modal
+                buttonText="Add Contact"
+                fieldsRequired={true}
+                modalState={modalState}
+                setModalState={setModalState}
+                submitFunction={handleSubmit}
+            />
             <Snackbar error={createError} message="Error while creating Record" />
         </>
     );

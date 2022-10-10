@@ -45,7 +45,7 @@ export const ListItem: React.FC<ListItemProps> = ({ record }) => {
                 </Phonenumber>
             </div>
             <div>
-                <UpdateRecord _id={_id} />
+                <UpdateRecord record={record} />
                 <RecordButton onClick={() => onDelete()} color="error" variant="contained">
                     <DeleteIcon />
                 </RecordButton>
