@@ -9,6 +9,7 @@ import { useDeleteRecord } from "../hooks/useRequest";
 import { RecordActionKind, RecordContext } from "../providers/apiProvider";
 import { ErrorType, useSnackbar } from "../hooks/useSnackbar";
 import { Snackbar } from "./Snackbar";
+import { UpdateRecord } from "./UpdateRecord";
 interface ListItemProps {
     record: Record;
 }
@@ -43,9 +44,13 @@ export const ListItem: React.FC<ListItemProps> = ({ record }) => {
                     {phonenumber}
                 </Phonenumber>
             </div>
-            <DeleteButton onClick={() => onDelete()} color="error" variant="contained">
-                <DeleteIcon />
-            </DeleteButton>
+            <div>
+                <UpdateRecord />
+                <RecordButton onClick={() => onDelete()} color="error" variant="contained">
+                    <DeleteIcon />
+                </RecordButton>
+            </div>
+
             <Snackbar error={deleteError} message="Error while deleting record" />
         </ListItemContainer>
     );
@@ -77,8 +82,9 @@ const Name = styled.h3`
     margin: 10px 0;
 `;
 
-const DeleteButton = styled(Button)`
+export const RecordButton = styled(Button)`
     height: 50px;
+    margin: 0 5px !important;
 
     svg {
         color: ${({ theme }) => theme.palette.white};
