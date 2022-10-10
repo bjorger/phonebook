@@ -18,6 +18,9 @@ export const UpdateRecord: React.FC<IUpdateRecord> = ({ _id }) => {
     const { dispatch } = React.useContext(RecordContext);
     const [{ updateError }, , setError] = useSnackbar();
 
+    // This has to be done, because "react-hook-form" strictly sticks to the HTML standard
+    // That means, that undefined inputs are replaced with an empty string
+    // Therefore we strip our data received from the form
     const removeEmptyFields = (data: UpdateRecordInput) => {
         Object.keys(data).forEach((key) => {
             const _key = key as keyof UpdateRecordInput;

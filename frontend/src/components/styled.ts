@@ -44,6 +44,7 @@ export const Grid = styled.div`
 export const Layout = styled.div`
     min-height: 100vh;
     grid-column: 1 / span 24;
+    margin-bottom: 50px;
 
     @media (min-width: ${({ theme }) => `${theme.breakpoints.sm}px`}) {
         grid-column: 3 / span 20;

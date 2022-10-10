@@ -13,6 +13,7 @@ export interface IGetRecordsResponse {
 export function useGetRecords(
     take = 25,
     skip = 0,
+    enabled = true,
 ): UseQueryResult<IGetRecordsResponse, unknown> | QueryObserverIdleResult<IGetRecordsResponse, unknown> {
     return useQuery<IGetRecordsResponse>(
         ["records"],
@@ -36,7 +37,7 @@ export function useGetRecords(
 
             return getRecords;
         },
-        { keepPreviousData: true },
+        { keepPreviousData: true, enabled },
     );
 }
 
@@ -48,7 +49,6 @@ export function useSearchRecords(lastname: string): UseQueryResult<ISearchRecord
     return useQuery<ISearchRecord>(
         ["search-records", lastname],
         async () => {
-            console.log(lastname);
             const searchRecords = await graphQLClient.request(
                 gql`
                     query GetRecordsByLastname($lastname: String!) {

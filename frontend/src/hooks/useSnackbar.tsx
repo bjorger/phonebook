@@ -6,6 +6,7 @@ interface ISnackbar {
     createError: boolean;
     deleteError: boolean;
     updateError: boolean;
+    loadMoreError: boolean;
 }
 
 export enum ErrorType {
@@ -14,6 +15,7 @@ export enum ErrorType {
     CREATE_ERROR = "createError",
     DELETE_ERROR = "deleteError",
     UPDATE_ERROR = "updateError",
+    LOADMORE_ERROR = "loadMoreError",
 }
 
 export const useSnackbar = (): [
@@ -27,6 +29,7 @@ export const useSnackbar = (): [
         initialFetchError: false,
         searchError: false,
         updateError: false,
+        loadMoreError: false,
     });
 
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
@@ -40,6 +43,7 @@ export const useSnackbar = (): [
             initialFetchError: false,
             searchError: false,
             updateError: false,
+            loadMoreError: false,
         });
     };
 

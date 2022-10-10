@@ -19,7 +19,6 @@ export const Search: React.FC = () => {
 
         if (searchTerm.length > 0) {
             const { data, isError, isSuccess } = await refetch();
-            console.log(data);
 
             if (isSuccess) {
                 recordsToDispatch = data.recordsByLastname;

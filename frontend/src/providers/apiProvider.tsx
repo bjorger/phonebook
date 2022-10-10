@@ -24,6 +24,7 @@ export const RecordContext = React.createContext<ICtx>({
 
 export enum RecordActionKind {
     SET_RECORDS = "SET_RECORDS",
+    APPEND_RECORDS = "APPEND_RECORDS",
     DELETE_RECORD = "DELETE_RECORD",
     ADD_RECORD = "ADD_RECORD",
     SEARCH_RECORD = "SEARCH_RECORD",
@@ -63,6 +64,8 @@ const reducer = (state: RecordState, action: RecordAction): RecordState => {
         updatedRecords[index] = { ...updatedRecords[index], ...updatedRecord };
 
         return { ...state, records: updatedRecords };
+    } else if (action.type === RecordActionKind.APPEND_RECORDS) {
+        return { ...state, records: state.records.concat(action.payload as Record[]) };
     }
     return state;
 };
@@ -71,18 +74,23 @@ export const APIProvider: React.FC<APIProviderProps> = ({ children }) => {
     const { data, isSuccess, isError } = useGetRecords();
     const [state, dispatch] = React.useReducer(reducer, { records: [], searchResult: [] });
     const [, , setError] = useSnackbar();
+    const [isInitialLoad, setIsInitialLoad] = React.useState<boolean>(true);
 
     React.useEffect(() => {
-        if (isSuccess) {
-            dispatch({
-                type: RecordActionKind.SET_RECORDS,
-                payload: data.records,
-            });
+        if (isInitialLoad) {
+            if (isSuccess) {
+                dispatch({
+                    type: RecordActionKind.SET_RECORDS,
+                    payload: data.records,
+                });
+                setIsInitialLoad(false);
+            }
+
+            if (isError) {
+                setError(ErrorType.INITIAL_FETCH_ERROR);
+            }
         }
 
-        if (isError) {
-            setError(ErrorType.INITIAL_FETCH_ERROR);
-        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess, isError, data?.records]);
 

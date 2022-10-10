@@ -1,6 +1,7 @@
 import React from "react";
 import { AddContact } from "./components/AddContact";
 import { ListItem } from "./components/ListItem";
+import { LoadMore } from "./components/LoadMore";
 import { Search } from "./components/Searchbar";
 import { Snackbar } from "./components/Snackbar";
 import { Contacts, FlexContainer, Grid, Headline, Headline2, Layout } from "./components/styled";
@@ -27,7 +28,7 @@ function App() {
                 {recordsToDisplay.map((record, index) => (
                     <ListItem key={record.firstname + record.lastname + index} record={record} />
                 ))}
-
+                <LoadMore />
                 <Snackbar error={initialFetchError} message="Error while fetching data from server" />
             </Layout>
         </Grid>
