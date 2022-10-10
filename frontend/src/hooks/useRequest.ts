@@ -40,6 +40,37 @@ export function useGetRecords(
     );
 }
 
+interface ISearchRecord {
+    recordsByLastname: Record[];
+}
+
+export function useSearchRecords(lastname: string): UseQueryResult<ISearchRecord, unknown> | QueryObserverIdleResult<ISearchRecord, unknown> {
+    return useQuery<ISearchRecord>(
+        ["search-records", lastname],
+        async () => {
+            console.log(lastname);
+            const searchRecords = await graphQLClient.request(
+                gql`
+                    query GetRecordsByLastname($lastname: String!) {
+                        recordsByLastname(lastname: $lastname) {
+                            _id
+                            firstname
+                            lastname
+                            phonenumber
+                        }
+                    }
+                `,
+                {
+                    lastname,
+                },
+            );
+
+            return searchRecords;
+        },
+        { enabled: false },
+    );
+}
+
 export function useDeleteRecord(id: string): UseMutationResult<Number, unknown, void, unknown> {
     return useMutation<Number>(["delete-record"], async () => {
         const deleteRecord = await graphQLClient.request(

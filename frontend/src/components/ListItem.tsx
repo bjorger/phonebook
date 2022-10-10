@@ -7,6 +7,8 @@ import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDeleteRecord } from "../hooks/useRequest";
 import { RecordActionKind, RecordContext } from "../providers/apiProvider";
+import { ErrorType, useSnackbar } from "../hooks/useSnackbar";
+import { Snackbar } from "./Snackbar";
 interface ListItemProps {
     record: Record;
 }
@@ -15,13 +17,19 @@ export const ListItem: React.FC<ListItemProps> = ({ record }) => {
     const { firstname, lastname, phonenumber, _id } = record;
     const mutation = useDeleteRecord(_id);
     const { dispatch } = React.useContext(RecordContext);
+    const [{ deleteError }, , setError] = useSnackbar();
 
     const onDelete = () => {
-        dispatch({
-            type: RecordActionKind.DELETE_RECORD,
-            payload: record._id,
-        });
         mutation.mutate();
+
+        if (mutation.isError) {
+            setError(ErrorType.DELETE_ERROR);
+        } else {
+            dispatch({
+                type: RecordActionKind.DELETE_RECORD,
+                payload: record._id,
+            });
+        }
     };
 
     return (
@@ -38,13 +46,19 @@ export const ListItem: React.FC<ListItemProps> = ({ record }) => {
             <DeleteButton onClick={() => onDelete()} color="error" variant="contained">
                 <DeleteIcon />
             </DeleteButton>
+            <Snackbar error={deleteError} message="Error while deleting record" />
         </ListItemContainer>
     );
 };
 
 const ListItemContainer = styled(FlexContainer)`
-    border-top: 1px solid ${({ theme }) => theme.palette.gray};
+    border: 1px solid ${({ theme }) => theme.palette.gray};
+    border-bottom: 0;
     padding: 10px 20px;
+
+    &:last-child {
+        border-bottom: 1px solid ${({ theme }) => theme.palette.gray};
+    }
 `;
 
 const Phonenumber = styled.a`

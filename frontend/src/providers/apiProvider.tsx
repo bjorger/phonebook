@@ -8,6 +8,8 @@ interface APIProviderProps {
 
 interface RecordState {
     records: Record[];
+    searchResult: Record[];
+    initialFetchError: boolean;
 }
 
 interface ICtx {
@@ -16,7 +18,7 @@ interface ICtx {
 }
 
 export const RecordContext = React.createContext<ICtx>({
-    state: { records: [] },
+    state: { records: [], searchResult: [], initialFetchError: false },
     dispatch: () => {},
 });
 
@@ -24,11 +26,13 @@ export enum RecordActionKind {
     SET_RECORDS = "SET_RECORDS",
     DELETE_RECORD = "DELETE_RECORD",
     ADD_RECORD = "ADD_RECORD",
+    ON_SEARCH = "ON_SEARCH",
+    INITIAL_FETCH_ERROR = "INITIAL_FETCH_ERROR",
 }
 
 interface RecordAction {
     type: RecordActionKind;
-    payload: Record[] | Record | string;
+    payload: Record[] | Record | string | boolean;
 }
 
 const reducer = (state: RecordState, action: RecordAction): RecordState => {
@@ -43,14 +47,19 @@ const reducer = (state: RecordState, action: RecordAction): RecordState => {
         const currentRecords = state.records;
 
         return { ...state, records: currentRecords.filter(({ _id }) => _id !== action.payload) };
+    } else if (action.type === RecordActionKind.ON_SEARCH) {
+        console.log(action.payload);
+        return { ...state, searchResult: action.payload as Record[] };
+    } else if (action.type === RecordActionKind.INITIAL_FETCH_ERROR) {
+        return { ...state, initialFetchError: action.payload as boolean };
     }
 
     return state;
 };
 
 export const APIProvider: React.FC<APIProviderProps> = ({ children }) => {
-    const { data, isSuccess } = useGetRecords();
-    const [state, dispatch] = React.useReducer(reducer, { records: [] });
+    const { data, isSuccess, isError } = useGetRecords();
+    const [state, dispatch] = React.useReducer(reducer, { records: [], searchResult: [], initialFetchError: false });
 
     React.useEffect(() => {
         if (isSuccess) {
@@ -59,7 +68,14 @@ export const APIProvider: React.FC<APIProviderProps> = ({ children }) => {
                 payload: data.records,
             });
         }
-    }, [isSuccess, data?.records]);
+
+        if (isError) {
+            dispatch({
+                type: RecordActionKind.INITIAL_FETCH_ERROR,
+                payload: isError,
+            });
+        }
+    }, [isSuccess, isError, data?.records]);
 
     return <RecordContext.Provider value={{ state, dispatch }}> {children} </RecordContext.Provider>;
 };

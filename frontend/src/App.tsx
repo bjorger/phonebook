@@ -1,13 +1,16 @@
 import React from "react";
-import styled from "styled-components";
 import { AddContact } from "./components/AddContact";
 import { ListItem } from "./components/ListItem";
 import { Search } from "./components/Searchbar";
+import { Snackbar } from "./components/Snackbar";
 import { Contacts, FlexContainer, Grid, Headline, Headline2, Layout } from "./components/styled";
+import { useSnackbar } from "./hooks/useSnackbar";
 import { RecordContext } from "./providers/apiProvider";
 
 function App() {
     const { state } = React.useContext(RecordContext);
+    const [{ initialFetchError }] = useSnackbar();
+    let recordsToDisplay = state.searchResult.length > 0 ? state.searchResult : state.records;
 
     return (
         <Grid>
@@ -21,19 +24,14 @@ function App() {
                     <AddContact />
                 </FlexContainer>
                 <Search />
-                <Container>
-                    {state.records.map((record, index) => (
-                        <ListItem key={record.firstname + record.lastname + index} record={record} />
-                    ))}
-                </Container>
+                {recordsToDisplay.map((record, index) => (
+                    <ListItem key={record.firstname + record.lastname + index} record={record} />
+                ))}
+
+                <Snackbar error={initialFetchError} message="Error while fetching data from server" />
             </Layout>
         </Grid>
     );
 }
 
 export default App;
-
-const Container = styled.div`
-    border: 1px solid ${({ theme }) => theme.palette.gray};
-    border-top: 0px;
-`;

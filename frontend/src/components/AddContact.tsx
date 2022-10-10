@@ -3,7 +3,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useCreateRecord } from "../hooks/useRequest";
+import { ErrorType, useSnackbar } from "../hooks/useSnackbar";
 import { RecordActionKind, RecordContext } from "../providers/apiProvider";
+import { Snackbar } from "./Snackbar";
 interface FormData {
     firstname: string;
     lastname: string;
@@ -15,20 +17,26 @@ export const AddContact: React.FC = () => {
     const [modalState, setModalState] = React.useState<boolean>(false);
     const { register, handleSubmit, reset } = useForm<FormData>();
     const { dispatch } = React.useContext(RecordContext);
+    const [{ createError }, , setError] = useSnackbar();
 
     const onSubmit = handleSubmit(async (data) => {
         const res = await mutation.mutateAsync(data);
-        dispatch({
-            type: RecordActionKind.ADD_RECORD,
-            payload: res.createRecord,
-        });
 
-        setModalState(false);
-        reset({
-            firstname: "",
-            lastname: "",
-            phonenumber: "",
-        });
+        if (mutation.isError) {
+            setError(ErrorType.CREATE_ERROR);
+        } else {
+            dispatch({
+                type: RecordActionKind.ADD_RECORD,
+                payload: res.createRecord,
+            });
+
+            setModalState(false);
+            reset({
+                firstname: "",
+                lastname: "",
+                phonenumber: "",
+            });
+        }
     });
 
     return (
@@ -46,6 +54,7 @@ export const AddContact: React.FC = () => {
                     </Button>
                 </Form>
             </Modal>
+            <Snackbar error={createError} message="Error while creating Record" />
         </>
     );
 };
