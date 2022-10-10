@@ -11,6 +11,7 @@ Your application should provide a form where you can enter in first name, last n
 To start this application simply run
 
 > docker-compose build
+
 > docker-compose up
 
 After the setup is done, the application will be available at: http://localhost:3001
