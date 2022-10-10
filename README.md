@@ -13,4 +13,4 @@ To start this application simply run
 > docker-compose build
 > docker-compose up
 
-After this, the application will be available at: http://localhost:3000
+After the setup is done, the application will be available at: http://localhost:3001

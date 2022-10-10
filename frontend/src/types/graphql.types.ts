@@ -26,6 +26,13 @@ export type RecordInput = {
     phonenumber: Scalars["String"];
 };
 
+export type UpdateRecordInput = {
+    _id: Scalars["String"];
+    firstname?: Scalars["String"];
+    lastname?: Scalars["String"];
+    phonenumber?: Scalars["String"];
+};
+
 export type Query = {
     __typename?: "Query";
     records?: Maybe<Array<Record>>;

@@ -7,11 +7,12 @@ services:
             dockerfile: Dockerfile
         image: react
         ports:
-            - "3000:3000"
+            - "3001:3001"
         volumes:
             - ./client
         environment:
             - REACT_APP_BACKEND_URL=http://localhost:5001/
+            - PORT=3001
     backend:
         container_name: backend
         build:

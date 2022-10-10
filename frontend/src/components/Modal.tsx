@@ -6,6 +6,7 @@ interface IModal {
     submitFunction: Function;
     modalState: boolean;
     setModalState: Function;
+    fieldsRequired: boolean;
 }
 
 interface FormData {
@@ -14,7 +15,7 @@ interface FormData {
     phonenumber: string;
 }
 
-export const Modal: React.FC<IModal> = ({ modalState, setModalState, submitFunction }) => {
+export const Modal: React.FC<IModal> = ({ modalState, setModalState, submitFunction, fieldsRequired }) => {
     const { register, handleSubmit, reset } = useForm<FormData>();
 
     const onSubmit = handleSubmit(async (data) => {
@@ -31,9 +32,9 @@ export const Modal: React.FC<IModal> = ({ modalState, setModalState, submitFunct
     return (
         <MUIModal open={modalState} onClose={() => setModalState(false)}>
             <Form onSubmit={onSubmit}>
-                <TextField variant="outlined" required {...register("firstname")} label="Firstname" />
-                <TextField variant="outlined" required {...register("lastname")} label="Lastname" />
-                <TextField variant="outlined" required {...register("phonenumber")} label="Phonenumber" />
+                <TextField variant="outlined" required={fieldsRequired} {...register("firstname")} label="Firstname" />
+                <TextField variant="outlined" required={fieldsRequired} {...register("lastname")} label="Lastname" />
+                <TextField variant="outlined" required={fieldsRequired} {...register("phonenumber")} label="Phonenumber" />
                 <Button type="submit" variant="contained">
                     ADD CONTACT
                 </Button>

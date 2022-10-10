@@ -29,7 +29,7 @@ export const Search: React.FC = () => {
         }
 
         dispatch({
-            type: RecordActionKind.ON_SEARCH,
+            type: RecordActionKind.SEARCH_RECORD,
             payload: recordsToDispatch,
         });
     };

@@ -1,11 +1,11 @@
 import React from "react";
-import { RecordContext } from "../providers/apiProvider";
 
 interface ISnackbar {
     initialFetchError: boolean;
     searchError: boolean;
     createError: boolean;
     deleteError: boolean;
+    updateError: boolean;
 }
 
 export enum ErrorType {
@@ -13,6 +13,7 @@ export enum ErrorType {
     SEARCH_ERROR = "searchError",
     CREATE_ERROR = "createError",
     DELETE_ERROR = "deleteError",
+    UPDATE_ERROR = "updateError",
 }
 
 export const useSnackbar = (): [
@@ -25,15 +26,8 @@ export const useSnackbar = (): [
         deleteError: false,
         initialFetchError: false,
         searchError: false,
+        updateError: false,
     });
-    const { state } = React.useContext(RecordContext);
-
-    React.useEffect(() => {
-        if (state.initialFetchError) {
-            setSnackbarState({ ...snackbarState, initialFetchError: state.initialFetchError });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.initialFetchError]);
 
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
@@ -45,6 +39,7 @@ export const useSnackbar = (): [
             deleteError: false,
             initialFetchError: false,
             searchError: false,
+            updateError: false,
         });
     };
 

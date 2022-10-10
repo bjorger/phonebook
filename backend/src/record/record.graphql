@@ -11,6 +11,12 @@ input RecordInput {
   phonenumber: String!
 }
 
+input UpdateRecordInput {
+  firstname: String
+  lastname: String
+  phonenumber: String
+}
+
 type Query {
   records(take: Int = 25, skip: Int = 0): [Record!]
   record(id: String!): Record!
@@ -20,5 +26,5 @@ type Query {
 type Mutation {
   createRecord(record: RecordInput!): Record
   deleteRecord(id: String!): Int
-  updateRecord(id: String!, record: RecordInput!): Int
+  updateRecord(id: String!, record: UpdateRecordInput): Int
 }

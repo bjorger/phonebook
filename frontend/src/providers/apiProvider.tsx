@@ -1,6 +1,7 @@
 import React from "react";
 import { useGetRecords } from "../hooks/useRequest";
-import { Record } from "../types/graphql.types";
+import { ErrorType, useSnackbar } from "../hooks/useSnackbar";
+import { Record, UpdateRecordInput } from "../types/graphql.types";
 
 interface APIProviderProps {
     children: React.ReactNode;
@@ -9,7 +10,6 @@ interface APIProviderProps {
 interface RecordState {
     records: Record[];
     searchResult: Record[];
-    initialFetchError: boolean;
 }
 
 interface ICtx {
@@ -18,7 +18,7 @@ interface ICtx {
 }
 
 export const RecordContext = React.createContext<ICtx>({
-    state: { records: [], searchResult: [], initialFetchError: false },
+    state: { records: [], searchResult: [] },
     dispatch: () => {},
 });
 
@@ -26,13 +26,14 @@ export enum RecordActionKind {
     SET_RECORDS = "SET_RECORDS",
     DELETE_RECORD = "DELETE_RECORD",
     ADD_RECORD = "ADD_RECORD",
-    ON_SEARCH = "ON_SEARCH",
+    SEARCH_RECORD = "SEARCH_RECORD",
+    UPDATE_RECORD = "UPDATE_RECORD",
     INITIAL_FETCH_ERROR = "INITIAL_FETCH_ERROR",
 }
 
 interface RecordAction {
     type: RecordActionKind;
-    payload: Record[] | Record | string | boolean;
+    payload: Record[] | Record | UpdateRecordInput | string | boolean;
 }
 
 const reducer = (state: RecordState, action: RecordAction): RecordState => {
@@ -47,19 +48,29 @@ const reducer = (state: RecordState, action: RecordAction): RecordState => {
         const currentRecords = state.records;
 
         return { ...state, records: currentRecords.filter(({ _id }) => _id !== action.payload) };
-    } else if (action.type === RecordActionKind.ON_SEARCH) {
-        console.log(action.payload);
+    } else if (action.type === RecordActionKind.SEARCH_RECORD) {
         return { ...state, searchResult: action.payload as Record[] };
-    } else if (action.type === RecordActionKind.INITIAL_FETCH_ERROR) {
-        return { ...state, initialFetchError: action.payload as boolean };
-    }
+    } else if (action.type === RecordActionKind.UPDATE_RECORD) {
+        const updatedRecord = action.payload as UpdateRecordInput;
+        const index = state.records.findIndex((record) => record._id === updatedRecord._id);
 
+        if (index === -1) {
+            return state;
+        }
+
+        const updatedRecords = state.records;
+
+        updatedRecords[index] = { ...updatedRecords[index], ...updatedRecord };
+
+        return { ...state, records: updatedRecords };
+    }
     return state;
 };
 
 export const APIProvider: React.FC<APIProviderProps> = ({ children }) => {
     const { data, isSuccess, isError } = useGetRecords();
-    const [state, dispatch] = React.useReducer(reducer, { records: [], searchResult: [], initialFetchError: false });
+    const [state, dispatch] = React.useReducer(reducer, { records: [], searchResult: [] });
+    const [, , setError] = useSnackbar();
 
     React.useEffect(() => {
         if (isSuccess) {
@@ -70,11 +81,9 @@ export const APIProvider: React.FC<APIProviderProps> = ({ children }) => {
         }
 
         if (isError) {
-            dispatch({
-                type: RecordActionKind.INITIAL_FETCH_ERROR,
-                payload: isError,
-            });
+            setError(ErrorType.INITIAL_FETCH_ERROR);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess, isError, data?.records]);
 
     return <RecordContext.Provider value={{ state, dispatch }}> {children} </RecordContext.Provider>;

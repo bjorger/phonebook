@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Record } from './record.entity';
 import { RecordInput } from './record.input';
 import { RecordService } from './record.service';
+import { UpdateRecordInput } from './updateRecord.input';
 
 @Resolver('Record')
 export class RecordResolver {
@@ -35,7 +36,7 @@ export class RecordResolver {
   @Mutation(() => Number)
   async updateRecord(
     @Args('id') recordId: string,
-    @Args('record') record: RecordInput,
+    @Args('record') record: UpdateRecordInput,
   ) {
     return this.recordService.update(recordId, record);
   }

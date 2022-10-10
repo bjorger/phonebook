@@ -1,6 +1,6 @@
 import { QueryObserverIdleResult, useMutation, UseMutationResult, useQuery, UseQueryResult } from "react-query";
 import { GraphQLClient, gql } from "graphql-request";
-import { Record, RecordInput } from "../types/graphql.types";
+import { Record, RecordInput, UpdateRecordInput } from "../types/graphql.types";
 
 const API_URL = `${process.env.REACT_APP_BACKEND_URL}graphql`;
 
@@ -113,5 +113,25 @@ export function useCreateRecord(): UseMutationResult<ICreateRecord, any, RecordI
         );
 
         return createRecord;
+    });
+}
+
+export function useUpdateRecord(): UseMutationResult<Number, any, UpdateRecordInput, unknown> {
+    return useMutation<Number, any, UpdateRecordInput>(["create-record"], async ({ _id, firstname, lastname, phonenumber }) => {
+        const updateRecord = await graphQLClient.request(
+            gql`
+                mutation updateRecord($id: String!, $firstname: String, $lastname: String, $phonenumber: String) {
+                    updateRecord(id: $id, record: { firstname: $firstname, lastname: $lastname, phonenumber: $phonenumber })
+                }
+            `,
+            {
+                id: _id,
+                firstname,
+                lastname,
+                phonenumber,
+            },
+        );
+
+        return updateRecord;
     });
 }
