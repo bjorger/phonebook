@@ -7,7 +7,7 @@ services:
             dockerfile: Dockerfile
         image: react
         ports:
-            - "3001:3001"
+            - "3000:3000"
         volumes:
             - ./client
         environment:
@@ -24,6 +24,7 @@ services:
             - ./server
         environment:
             - MONGO_URL=mongodb://172.17.0.1:27017
+            - PORT=5001
         links:
             - mongo
 
