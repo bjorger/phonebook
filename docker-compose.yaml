@@ -21,8 +21,6 @@ services:
         image: server
         ports:
             - "5001:5001"
-        volumes:
-            - ./server
         environment:
             - MONGO_URL=mongodb://172.17.0.1:27017
             - PORT=5001

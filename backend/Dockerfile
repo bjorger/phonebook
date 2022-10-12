@@ -8,8 +8,9 @@ RUN npm install
 
 COPY tsconfig.build.json ./
 
-RUN npm run build
 COPY . .
+
+RUN npm run build
 
 EXPOSE 5000
 
