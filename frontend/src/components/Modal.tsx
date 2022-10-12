@@ -2,6 +2,7 @@ import { Button, Modal as MUIModal, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { Record } from "../types/graphql.types";
+import { ErrorMessage } from "@hookform/error-message";
 
 interface IModal {
     submitFunction: Function;
@@ -19,16 +20,25 @@ interface FormData {
 }
 
 export const Modal: React.FC<IModal> = ({ modalState, setModalState, submitFunction, fieldsRequired, buttonText, defaultValues }) => {
-    const { register, handleSubmit, reset } = useForm<FormData>();
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<FormData>();
+    const phoneNumberRegex = /^[0-9*# +]+$/;
+
+    console.log(errors);
 
     const onSubmit = handleSubmit(async (data) => {
+        console.log(data);
         submitFunction(data);
 
         setModalState(false);
         reset({
-            firstname: "",
-            lastname: "",
-            phonenumber: "",
+            firstname: defaultValues ? defaultValues.firstname : "",
+            lastname: defaultValues ? defaultValues.lastname : "",
+            phonenumber: defaultValues ? defaultValues.phonenumber : "",
         });
     });
 
@@ -52,10 +62,17 @@ export const Modal: React.FC<IModal> = ({ modalState, setModalState, submitFunct
                 <TextField
                     variant="outlined"
                     defaultValue={defaultValues?.phonenumber}
-                    required={fieldsRequired}
-                    {...register("phonenumber")}
+                    required={true}
+                    id={defaultValues ? `${defaultValues._id}_phonenumber` : "phonenumber"}
+                    {...register("phonenumber", {
+                        validate: (value: string) => {
+                            console.log("Hallo");
+                            return phoneNumberRegex.test(value);
+                        },
+                    })}
                     label="Phonenumber"
                 />
+                <ErrorMessage errors={errors} name="phonenumber" render={() => <Error>Please only use 0-9 and +- # for the phonenumber</Error>} />
                 <Button type="submit" variant="contained">
                     {buttonText}
                 </Button>
@@ -64,11 +81,17 @@ export const Modal: React.FC<IModal> = ({ modalState, setModalState, submitFunct
     );
 };
 
+const Error = styled.p`
+    color: ${({ theme }) => theme.palette.error};
+    ${({ theme }) => theme.fonts.error};
+`;
+
 const Form = styled.form`
     background: white;
     display: flex;
     flex-direction: column;
     padding: 30px 50px;
+    min-width: 300px;
 
     .MuiTextField-root {
         margin: 10px 0;

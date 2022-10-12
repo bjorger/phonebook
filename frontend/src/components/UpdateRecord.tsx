@@ -33,6 +33,7 @@ export const UpdateRecord: React.FC<IUpdateRecord> = ({ record }) => {
     };
 
     const handleSubmit = async (data: UpdateRecordInput) => {
+        console.log(data);
         const strippedData = removeEmptyFields(data);
         const updatedRecord = { ...strippedData, _id: record._id };
         await mutation.mutateAsync(updatedRecord);

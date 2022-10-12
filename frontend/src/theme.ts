@@ -1,4 +1,4 @@
-import { css, FlattenInterpolation, ThemeProps } from "styled-components/macro";
+import { css, FlattenInterpolation, ThemeProps, SimpleInterpolation } from "styled-components/macro";
 
 interface Breakpoints {
     sm: number;
@@ -8,10 +8,12 @@ interface Palette {
     background: string;
     gray: string;
     white: string;
+    error: string;
 }
 
 interface Fonts {
     h1: FlattenInterpolation<ThemeProps<unknown>>;
+    error: SimpleInterpolation;
 }
 
 interface Theme {
@@ -30,6 +32,7 @@ const theme: Theme = {
         background: "#f8f4f4",
         gray: "#808080",
         white: "#FFFFFF",
+        error: "#FF9494",
     },
     fonts: {
         h1: css`
@@ -41,6 +44,11 @@ const theme: Theme = {
                 font-size: 40px;
                 line-height: 50px;
             }
+        `,
+        error: css`
+            font-size: 12px;
+            line-height: 14px;
+            font-weight: 700;
         `,
     },
 };

@@ -47,6 +47,6 @@ export const Layout = styled.div`
     margin-bottom: 50px;
 
     @media (min-width: ${({ theme }) => `${theme.breakpoints.sm}px`}) {
-        grid-column: 3 / span 20;
+        grid-column: 6 / span 14;
     }
 `;

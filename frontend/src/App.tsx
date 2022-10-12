@@ -26,7 +26,7 @@ function App() {
                 </FlexContainer>
                 <Search />
                 {recordsToDisplay.map((record, index) => (
-                    <ListItem key={record.firstname + record.lastname + index} record={record} />
+                    <ListItem key={record._id} record={record} />
                 ))}
                 <LoadMore />
                 <Snackbar error={initialFetchError} message="Error while fetching data from server" />

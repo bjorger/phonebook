@@ -80,6 +80,7 @@ const Phonenumber = styled.a`
 
 const Name = styled.h3`
     margin: 10px 0;
+    text-transform: capitalize;
 `;
 
 export const RecordButton = styled(Button)`

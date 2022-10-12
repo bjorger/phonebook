@@ -118,6 +118,7 @@ export function useCreateRecord(): UseMutationResult<ICreateRecord, any, RecordI
 
 export function useUpdateRecord(): UseMutationResult<Number, any, UpdateRecordInput, unknown> {
     return useMutation<Number, any, UpdateRecordInput>(["create-record"], async ({ _id, firstname, lastname, phonenumber }) => {
+        console.log(phonenumber);
         const updateRecord = await graphQLClient.request(
             gql`
                 mutation updateRecord($id: String!, $firstname: String, $lastname: String, $phonenumber: String) {
