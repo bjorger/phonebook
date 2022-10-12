@@ -34,7 +34,7 @@ export const ListItem: React.FC<ListItemProps> = ({ record }) => {
     };
 
     return (
-        <ListItemContainer justifyContent="space-between" background="white">
+        <ListItemContainer data-testid="listItem" justifyContent="space-between" background="white">
             <div>
                 <Name>
                     {firstname} {lastname}

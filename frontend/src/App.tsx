@@ -11,6 +11,7 @@ import { RecordContext } from "./providers/apiProvider";
 function App() {
     const { state } = React.useContext(RecordContext);
     const [{ initialFetchError }] = useSnackbar();
+
     let recordsToDisplay = state.searchResult.length > 0 ? state.searchResult : state.records;
 
     return (
@@ -25,7 +26,7 @@ function App() {
                     <AddContact />
                 </FlexContainer>
                 <Search />
-                {recordsToDisplay.map((record, index) => (
+                {recordsToDisplay.map((record) => (
                     <ListItem key={record._id} record={record} />
                 ))}
                 <LoadMore />

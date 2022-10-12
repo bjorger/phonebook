@@ -7,12 +7,12 @@ interface APIProviderProps {
     children: React.ReactNode;
 }
 
-interface RecordState {
+export interface RecordState {
     records: Record[];
     searchResult: Record[];
 }
 
-interface ICtx {
+export interface ICtx {
     state: RecordState;
     dispatch: Function;
 }
