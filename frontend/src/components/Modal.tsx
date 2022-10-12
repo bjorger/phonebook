@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { Record } from "../types/graphql.types";
 import { ErrorMessage } from "@hookform/error-message";
+import React from "react";
 
 interface IModal {
     submitFunction: Function;
@@ -28,18 +29,18 @@ export const Modal: React.FC<IModal> = ({ modalState, setModalState, submitFunct
     } = useForm<FormData>();
     const phoneNumberRegex = /^[0-9*# +]+$/;
 
-    console.log(errors);
-
-    const onSubmit = handleSubmit(async (data) => {
-        console.log(data);
-        submitFunction(data);
-
-        setModalState(false);
+    React.useEffect(() => {
         reset({
             firstname: defaultValues ? defaultValues.firstname : "",
             lastname: defaultValues ? defaultValues.lastname : "",
             phonenumber: defaultValues ? defaultValues.phonenumber : "",
         });
+    }, [defaultValues]);
+
+    const onSubmit = handleSubmit(async (data) => {
+        submitFunction(data);
+
+        setModalState(false);
     });
 
     return (
